@@ -3,7 +3,7 @@
 
 Widgets for AnyStatus to provide capability to check various Kubernetes Cluster metrics.
 
-[![Build status](https://ci.appveyor.com/api/projects/status/4gh0513b19s0tnmk?svg=true)](https://ci.appveyor.com/project/fatihboy/anystatuskubernetes)
+[![Build status](https://ci.appveyor.com/api/projects/status/tt8r7y479u0rhxnu?svg=true)](https://ci.appveyor.com/project/fatihboy/anystatuskubernetes)
 [![NuGet](https://img.shields.io/nuget/v/AnyStatus.Plugins.Kubernetes.svg)](https://www.nuget.org/packages/AnyStatus.Plugins.Kubernetes/)
 
 
