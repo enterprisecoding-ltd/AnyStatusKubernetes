@@ -16,16 +16,14 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using AnyStatus.Plugins.Kubernetes.KubernetesClient.Objects.Shared;
 using Newtonsoft.Json;
 
 namespace AnyStatus.Plugins.Kubernetes.KubernetesClient.Objects
 {
-    public class Metadata
+    public class PodsResponse : KubernetesResponseBase
     {
-        [JsonProperty("name")]
-        public virtual string Name { get; internal set; }
-
-        [JsonProperty("namespace")]
-        public virtual string Namespace { get; internal set; }
+        [JsonProperty("items")]
+        public virtual ItemEntry[] Items { get; internal set; }
     }
 }

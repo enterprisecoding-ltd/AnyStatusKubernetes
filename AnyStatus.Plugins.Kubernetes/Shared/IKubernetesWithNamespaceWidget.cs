@@ -16,16 +16,13 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Newtonsoft.Json;
-
-namespace AnyStatus.Plugins.Kubernetes.KubernetesClient.Objects
+namespace AnyStatus.Plugins.Kubernetes.Shared
 {
-    public class Metadata
+    public interface IKubernetesWithNamespaceWidget : IKubernetesWidget
     {
-        [JsonProperty("name")]
-        public virtual string Name { get; internal set; }
-
-        [JsonProperty("namespace")]
-        public virtual string Namespace { get; internal set; }
+        /// <summary>
+        /// Kubernetes Cluster namespace to connect
+        /// </summary>
+        string Namespace { get; set; }
     }
 }

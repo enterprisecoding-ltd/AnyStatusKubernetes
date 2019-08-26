@@ -26,11 +26,6 @@ namespace AnyStatus.Plugins.Kubernetes.Shared
         string Host { get; set; }
 
         /// <summary>
-        /// Kubernetes Cluster namespace to connect
-        /// </summary>
-        string Namespace { get; set; }
-
-        /// <summary>
         /// Method used for autheticate client against Kubernetes Cluster
         /// </summary>
         AuthenticationMethods AuthenticationMetod { get; set; }

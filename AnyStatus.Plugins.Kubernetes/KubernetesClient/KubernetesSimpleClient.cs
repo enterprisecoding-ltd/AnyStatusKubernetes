@@ -66,10 +66,10 @@ namespace AnyStatus.Plugins.Kubernetes.KubernetesClient
         }
 
         /// <summary>
-        /// Retrieves cluster heaşth status
+        /// Retrieves Kubernetes Cluster Namespace List
         /// </summary>
-        /// <param name="cancellationToken">Token to cancel Elasticsearch request</param>
-        /// <returns>Cluster health status</returns>
+        /// <param name="cancellationToken">Token to cancel Kubernetes Cluster request</param>
+        /// <returns>Cluster namespace list</returns>
         public virtual async Task<NamespacesResponse> NamespacesAsync(CancellationToken cancellationToken)
         {
             NamespacesResponse result;
@@ -85,6 +85,32 @@ namespace AnyStatus.Plugins.Kubernetes.KubernetesClient
             catch (Exception ex)
             {
                 result = new NamespacesResponse { IsValid = false, OriginalException = ex };
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieves Kubernetes Cluster Pod List
+        /// </summary>
+        /// <param name="cancellationToken">Token to cancel Kubernetes Cluster request</param>
+        /// <returns>Cluster pod list</returns>
+        public virtual async Task<PodsResponse> PodsAsync(string @namespace, CancellationToken cancellationToken)
+        {
+            PodsResponse result;
+            try
+            {
+                var path = string.IsNullOrWhiteSpace(@namespace) ? "api/v1/pods" : $"api/v1/namespaces/{@namespace}/pods";
+                HttpResponseMessage responseMessage = await GetAsync(path, cancellationToken);
+
+                var response = await responseMessage.Content.ReadAsStringAsync();
+
+                result = JsonConvert.DeserializeObject<PodsResponse>(response);
+                result.IsValid = true;
+            }
+            catch (Exception ex)
+            {
+                result = new PodsResponse { IsValid = false, OriginalException = ex };
             }
 
             return result;

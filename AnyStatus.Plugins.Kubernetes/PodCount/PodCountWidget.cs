@@ -21,29 +21,38 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
-namespace AnyStatus.Plugins.Kubernetes.NamespaceCount
+namespace AnyStatus.Plugins.Kubernetes.PodCount
 {
-    [DisplayName("Namespace Count")]
+    [DisplayName("Pod Count")]
     [DisplayColumn("Kubernetes")]
-    [Description("Number of namespace on Kubernetes Cluster")]
-    public class NamespaceCountWidget : Sparkline, IKubernetesWidget, ISchedulable
+    [Description("Number of pods on Kubernetes Cluster")]
+    public class PodCountWidget : Sparkline, IKubernetesWithNamespaceWidget, ISchedulable
     {
         /// <summary>
         /// Kubernetes Cluster api uris to connect
         /// </summary>
         [Required]
         [PropertyOrder(10)]
-        [Category("Namespace Count")]
+        [Category("Pod Count")]
         [DisplayName("Api Host")]
         [Description("Kubernetes Cluster API server host")]
         public string Host { get; set; }
 
         /// <summary>
+        /// Kubernetes Cluster namespace to connect
+        /// </summary>
+        [PropertyOrder(20)]
+        [Category("Pod Count")]
+        [DisplayName("Namespace")]
+        [Description("Kubernetes Cluster namespace to connecy")]
+        public string Namespace { get; set; }
+
+        /// <summary>
         /// Method used for autheticate client against Kubernetes Cluster
         /// </summary>
         [Required]
-        [PropertyOrder(20)]
-        [Category("Namespace Count")]
+        [PropertyOrder(30)]
+        [Category("Pod Count")]
         [DisplayName("Authentication Metod")]
         [RefreshProperties(RefreshProperties.All)]
         [ItemsSource(typeof(AuthenticationMethodsItemsSource))]
@@ -65,9 +74,9 @@ namespace AnyStatus.Plugins.Kubernetes.NamespaceCount
         /// <summary>
         /// Service account token for OAuth2 authentication to connect Kubernetes Cluster
         /// </summary>
-        [PropertyOrder(30)]
+        [PropertyOrder(40)]
         [Browsable(true)]
-        [Category("Namespace Count")]
+        [Category("Pod Count")]
         [DisplayName("Access Token")]
         [Description("Kubernetes Cluster API access token")]
         public string AccessToken { get; set; }
@@ -75,9 +84,9 @@ namespace AnyStatus.Plugins.Kubernetes.NamespaceCount
         /// <summary>
         /// Username for Http basic authentication
         /// </summary>
-        [PropertyOrder(40)]
+        [PropertyOrder(50)]
         [Browsable(true)]
-        [Category("Namespace Count")]
+        [Category("Pod Count")]
         [DisplayName("Username")]
         [Description("Username to connect Kubernetes cluster")]
         public string Username { get; set; }
@@ -85,24 +94,24 @@ namespace AnyStatus.Plugins.Kubernetes.NamespaceCount
         /// <summary>
         /// Password for Http basic authentication
         /// </summary>
-        [PropertyOrder(50)]
+        [PropertyOrder(60)]
         [Browsable(true)]
-        [Category("Namespace Count")]
+        [Category("Pod Count")]
         [DisplayName("Password")]
         [Description("Password to connect Kubernetes cluster")]
         public
         string Password { get; set; }
 
-        [Category("Namespace Count")]
-        [PropertyOrder(60)]
+        [Category("Pod Count")]
+        [PropertyOrder(70)]
         [DisplayName("Trust Certificate")]
         [Description("Always trust server certificate")]
         public bool SkipTlsVerify { get; set; }
 
         private AuthenticationMethods authenticationMetod;
 
-        public NamespaceCountWidget() {
-            Name = "Namespace Count";
+        public PodCountWidget() {
+            Name = "Pod Count";
 
             Interval = 1;
             Units = IntervalUnits.Minutes;
