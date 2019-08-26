@@ -15,25 +15,44 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-using System.Collections.Generic;
 
 namespace AnyStatus.Plugins.Kubernetes.Shared
 {
     public interface IKubernetesWidget
     {
         /// <summary>
-        /// Kubernetes Cluster api uris to connect
+        /// Kubernetes Cluster api server uri to connect
         /// </summary>
-        List<string> ApiUris { get; set; }
+        string Host { get; set; }
 
         /// <summary>
-        /// Service account token to connect Kubernetes Cluster
+        /// Kubernetes Cluster namespace to connect
         /// </summary>
-        string Token { get; set; }
+        string Namespace { get; set; }
+
+        /// <summary>
+        /// Method used for autheticate client against Kubernetes Cluster
+        /// </summary>
+        AuthenticationMetods AuthenticationMetod { get; set; }
+
+        /// <summary>
+        /// Service account token for OAuth2 authentication to connect Kubernetes Cluster
+        /// </summary>
+        string AccessToken { get; set; }
+
+        /// <summary>
+        /// Username for Http basic authentication
+        /// </summary>
+        string Username { get; set; }
+
+        /// <summary>
+        /// Password for Http basic authentication
+        /// </summary>
+        string Password { get; set; }
 
         /// <summary>
         /// Should we trust unknown certificates?
         /// </summary>
-        bool TrustCertificate { get; set; }
+        bool SkipTlsVerify { get; set; }
     }
 }

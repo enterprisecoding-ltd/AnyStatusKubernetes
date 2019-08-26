@@ -35,7 +35,7 @@ namespace AnyStatus.Plugins.Kubernetes.Tests
         [TestMethod]
         public async Task NamespaceCountShouldValid()
         {
-            var widget = new NamespaceCountWidget { ApiUris = new List<string>() { "https://127.0.0.1:6443" } };
+            var widget = new NamespaceCountWidget { Host = "https://127.0.0.1:6443" };
 
             var namespacesResponseMock = new Mock<NamespacesResponse>();
             var kubernetesHelperMock = new Mock<KubernetesHelper>();
@@ -66,7 +66,7 @@ namespace AnyStatus.Plugins.Kubernetes.Tests
         [TestMethod]
         public async Task NamespaceCountShouldInvalidWhenResponseIsInvalid()
         {
-            var widget = new NamespaceCountWidget { ApiUris = new List<string>() { "https://127.0.0.1:6443" } };
+            var widget = new NamespaceCountWidget { Host = "https://127.0.0.1:6443" };
 
             var namespacesResponseMock = new Mock<NamespacesResponse>();
             var kubernetesHelperMock = new Mock<KubernetesHelper>();

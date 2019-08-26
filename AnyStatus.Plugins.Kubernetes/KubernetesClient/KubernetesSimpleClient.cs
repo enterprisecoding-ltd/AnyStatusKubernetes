@@ -26,6 +26,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -43,22 +44,24 @@ namespace AnyStatus.Plugins.Kubernetes.KubernetesClient
         /// <summary>
         /// List of http clients used to connect Kubernetes cluster members
         /// </summary>
-        private readonly List<HttpClient> httpClients;
+        private readonly HttpClient httpClient;
 
         public KubernetesSimpleClient(IKubernetesWidget kubernetesWidget)
         {
-            httpClients = new List<HttpClient>(kubernetesWidget.ApiUris.Count());
-            foreach (var uri in kubernetesWidget.ApiUris)
+            httpClient = new HttpClient { BaseAddress = new Uri(kubernetesWidget.Host) };
+            if (kubernetesWidget.AuthenticationMetod == AuthenticationMetods.OAuth2)
             {
-                var httpClient = new HttpClient { BaseAddress = new Uri(uri) };
-                httpClient.DefaultRequestHeaders.Authorization =  new AuthenticationHeaderValue("Bearer", kubernetesWidget.Token);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", kubernetesWidget.AccessToken);
+            }
+            else if (kubernetesWidget.AuthenticationMetod == AuthenticationMetods.HTTPBasicAuthentication)
+            {
+                var byteArray = Encoding.ASCII.GetBytes($"{kubernetesWidget.Username}:{kubernetesWidget.Password}");
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+            }
 
-                if (kubernetesWidget.TrustCertificate)
-                {
-                    ServicePointManager.ServerCertificateValidationCallback += RemoteCertificateValidation;
-                }
-
-                httpClients.Add(httpClient);
+            if (kubernetesWidget.SkipTlsVerify)
+            {
+                ServicePointManager.ServerCertificateValidationCallback += RemoteCertificateValidation;
             }
         }
 
@@ -89,29 +92,11 @@ namespace AnyStatus.Plugins.Kubernetes.KubernetesClient
 
         private async Task<HttpResponseMessage> GetAsync(string path, CancellationToken cancellationToken)
         {
-            Exception exception = null;
-            foreach (var httpClient in httpClients)
-            {
-                try
-                {
-                    var responseMessage = await httpClient.GetAsync(path, cancellationToken);
+            var responseMessage = await httpClient.GetAsync(path, cancellationToken);
 
-                    if (responseMessage.StatusCode == HttpStatusCode.ServiceUnavailable)
-                    {
-                        continue;
-                    }
+            responseMessage.EnsureSuccessStatusCode();
 
-                    responseMessage.EnsureSuccessStatusCode();
-
-                    return responseMessage;
-                }
-                catch (Exception ex)
-                {
-                    exception = ex;
-                }
-            }
-
-            throw exception ?? new InvalidOperationException("No clients available to service the request.");
+            return responseMessage; ;
         }
 
         private bool RemoteCertificateValidation(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
@@ -123,10 +108,7 @@ namespace AnyStatus.Plugins.Kubernetes.KubernetesClient
         {
             ServicePointManager.ServerCertificateValidationCallback -= RemoteCertificateValidation;
 
-            foreach (var httpClient in httpClients)
-            {
-                httpClient.Dispose();
-            }
+            httpClient.Dispose();
         }
     }
 }
