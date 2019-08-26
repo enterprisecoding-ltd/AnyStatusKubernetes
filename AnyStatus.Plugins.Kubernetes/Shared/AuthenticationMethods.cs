@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace AnyStatus.Plugins.Kubernetes.Shared
 {
-    public enum AuthenticationMetods
+    public enum AuthenticationMethods
     {
         OAuth2,
         HTTPBasicAuthentication

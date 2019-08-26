@@ -33,7 +33,7 @@ namespace AnyStatus.Plugins.Kubernetes.Shared
         /// <summary>
         /// Method used for autheticate client against Kubernetes Cluster
         /// </summary>
-        AuthenticationMetods AuthenticationMetod { get; set; }
+        AuthenticationMethods AuthenticationMetod { get; set; }
 
         /// <summary>
         /// Service account token for OAuth2 authentication to connect Kubernetes Cluster

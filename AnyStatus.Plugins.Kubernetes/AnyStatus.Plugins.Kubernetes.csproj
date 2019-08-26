@@ -71,7 +71,8 @@
     <Compile Include="NamespaceCount\NamespaceCountHandler.cs" />
     <Compile Include="NamespaceCount\NamespaceCountWidget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Shared\AuthenticationMetods.cs" />
+    <Compile Include="Shared\AuthenticationMethodsItemsSource.cs" />
+    <Compile Include="Shared\AuthenticationMethods.cs" />
     <Compile Include="Shared\IKubernetesWidget.cs" />
     <Compile Include="Shared\KubernetesHelper.cs" />
   </ItemGroup>

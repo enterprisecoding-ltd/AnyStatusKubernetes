@@ -49,11 +49,11 @@ namespace AnyStatus.Plugins.Kubernetes.KubernetesClient
         public KubernetesSimpleClient(IKubernetesWidget kubernetesWidget)
         {
             httpClient = new HttpClient { BaseAddress = new Uri(kubernetesWidget.Host) };
-            if (kubernetesWidget.AuthenticationMetod == AuthenticationMetods.OAuth2)
+            if (kubernetesWidget.AuthenticationMetod == AuthenticationMethods.OAuth2)
             {
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", kubernetesWidget.AccessToken);
             }
-            else if (kubernetesWidget.AuthenticationMetod == AuthenticationMetods.HTTPBasicAuthentication)
+            else if (kubernetesWidget.AuthenticationMetod == AuthenticationMethods.HTTPBasicAuthentication)
             {
                 var byteArray = Encoding.ASCII.GetBytes($"{kubernetesWidget.Username}:{kubernetesWidget.Password}");
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));

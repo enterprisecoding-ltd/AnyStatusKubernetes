@@ -55,8 +55,9 @@ namespace AnyStatus.Plugins.Kubernetes.NamespaceCount
         [Category("Namespace Count")]
         [DisplayName("Authentication Metod")]
         [RefreshProperties(RefreshProperties.All)]
+        [ItemsSource(typeof(AuthenticationMethodsItemsSource))]
         [Description("Kubernetes Cluster API server authentication method")]
-        public AuthenticationMetods AuthenticationMetod {
+        public AuthenticationMethods AuthenticationMetod {
             get => authenticationMetod;
             set
             {
@@ -64,9 +65,9 @@ namespace AnyStatus.Plugins.Kubernetes.NamespaceCount
 
                 OnPropertyChanged();
 
-                SetPropertyVisibility(nameof(AccessToken), authenticationMetod == AuthenticationMetods.OAuth2);
-                SetPropertyVisibility(nameof(Username), authenticationMetod == AuthenticationMetods.HTTPBasicAuthentication);
-                SetPropertyVisibility(nameof(Password), authenticationMetod == AuthenticationMetods.HTTPBasicAuthentication);
+                SetPropertyVisibility(nameof(AccessToken), authenticationMetod == AuthenticationMethods.OAuth2);
+                SetPropertyVisibility(nameof(Username), authenticationMetod == AuthenticationMethods.HTTPBasicAuthentication);
+                SetPropertyVisibility(nameof(Password), authenticationMetod == AuthenticationMethods.HTTPBasicAuthentication);
             }
         }
 
@@ -107,14 +108,14 @@ namespace AnyStatus.Plugins.Kubernetes.NamespaceCount
         [Description("Always trust server certificate")]
         public bool SkipTlsVerify { get; set; }
 
-        private AuthenticationMetods authenticationMetod;
+        private AuthenticationMethods authenticationMetod;
 
         public NamespaceCountWidget() {
             Name = "Namespace Count";
 
             Interval = 1;
             Units = IntervalUnits.Minutes;
-            AuthenticationMetod = AuthenticationMetods.OAuth2;
+            AuthenticationMetod = AuthenticationMethods.OAuth2;
         }
     }
 }
