@@ -7,6 +7,8 @@ Widgets for AnyStatus to provide capability to check various Kubernetes Cluster 
 
 [![Build status](https://ci.appveyor.com/api/projects/status/tt8r7y479u0rhxnu?svg=true)](https://ci.appveyor.com/project/fatihboy/anystatuskubernetes) [![NuGet](https://img.shields.io/nuget/v/AnyStatus.Plugins.Kubernetes.svg)](https://www.nuget.org/packages/AnyStatus.Plugins.Kubernetes/)
 
+![Screenshot](https://raw.githubusercontent.com/fatihboy/AnyStatusKubernetes/master/docs/images/Screenshot.png)
+
 ### Avaliable Widgets
 
 -  [x] Namespace Count
