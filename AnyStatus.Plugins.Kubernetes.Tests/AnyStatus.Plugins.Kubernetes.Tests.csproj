@@ -80,6 +80,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MetricHelperTests.cs" />
     <Compile Include="PodCountTests.cs" />
     <Compile Include="NamespaceCountTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

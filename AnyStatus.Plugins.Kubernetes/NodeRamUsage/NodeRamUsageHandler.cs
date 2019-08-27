@@ -20,42 +20,43 @@ using System.Threading.Tasks;
 using AnyStatus.API;
 using AnyStatus.Plugins.Kubernetes.Shared;
 
-namespace AnyStatus.Plugins.Kubernetes.NamespaceCount
+namespace AnyStatus.Plugins.Kubernetes.NodeRamUsage
 {
-    public class NamespaceCountHandler : IRequestHandler<MetricQueryRequest<NamespaceCountWidget>>
+    public class NodeRamUsageHandler : IRequestHandler<MetricQueryRequest<NodeRamUsageWidget>>
     {
         /// <summary>
         /// Kubernetes Helper to retrieve Kubernetes client
         /// </summary>
         private readonly KubernetesHelper kubernetesHelper;
 
-        public NamespaceCountHandler() : this(new KubernetesHelper()) { }
+        public NodeRamUsageHandler() : this(new KubernetesHelper()) { }
 
         /// <summary>
         /// Constructer used by unit tests
         /// </summary>
         /// <param name="kubernetesHelper">Kubernetes Helper class instance to use</param>
-        internal NamespaceCountHandler(KubernetesHelper kubernetesHelper)
+        internal NodeRamUsageHandler(KubernetesHelper kubernetesHelper)
         {
             this.kubernetesHelper = kubernetesHelper;
         }
 
-        public async Task Handle(MetricQueryRequest<NamespaceCountWidget> request, CancellationToken cancellationToken)
+        public async Task Handle(MetricQueryRequest<NodeRamUsageWidget> request, CancellationToken cancellationToken)
         {
-            var namespaceCountWidget = request.DataContext;
+            var nodeCPUUsageWidget = request.DataContext;
 
-            var client = kubernetesHelper.GetKubernetesClient(namespaceCountWidget);
+            var client = kubernetesHelper.GetKubernetesClient(nodeCPUUsageWidget);
 
-            var namespacesResponse = await client.GetNamespacesAsync(cancellationToken);
+            var metricsResponse = await client.GetNodeMetricsAsync(nodeCPUUsageWidget.NodeName, cancellationToken);
 
-            if (namespacesResponse.IsValid)
+            if (metricsResponse.IsValid)
             {
-                request.DataContext.Value = namespacesResponse.Items.Length;
+                var metric = MetricHelper.ParseMemoryUnit(metricsResponse.Usage.Memory);
+                request.DataContext.Value = metric.BaseValue;
                 request.DataContext.State = State.Ok;
             }
             else
             {
-                namespaceCountWidget.State = State.Invalid;
+                nodeCPUUsageWidget.State = State.Invalid;
             }
         }
     }

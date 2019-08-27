@@ -47,7 +47,7 @@ namespace AnyStatus.Plugins.Kubernetes.Tests
             kubernetesHelperMock.Setup(helper => helper.GetKubernetesClient(It.IsAny<IKubernetesWidget>()))
                 .Returns(kubernetesSimpleClientMock.Object);
 
-            kubernetesSimpleClientMock.Setup(client => client.NamespacesAsync(It.IsAny<CancellationToken>()))
+            kubernetesSimpleClientMock.Setup(client => client.GetNamespacesAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(namespacesResponseMock.Object));
 
             var request = MetricQueryRequest.Create(widget);
@@ -60,7 +60,7 @@ namespace AnyStatus.Plugins.Kubernetes.Tests
             Assert.AreEqual((long)50, widget.Value);
 
             kubernetesHelperMock.Verify(client => client.GetKubernetesClient(It.IsAny<IKubernetesWidget>()), Times.Once());
-            kubernetesSimpleClientMock.Verify(client => client.NamespacesAsync(It.IsAny<CancellationToken>()), Times.Once());
+            kubernetesSimpleClientMock.Verify(client => client.GetNamespacesAsync(It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [TestMethod]
@@ -77,7 +77,7 @@ namespace AnyStatus.Plugins.Kubernetes.Tests
             kubernetesHelperMock.Setup(helper => helper.GetKubernetesClient(It.IsAny<IKubernetesWidget>()))
                 .Returns(kubernetesSimpleClientMock.Object);
 
-            kubernetesSimpleClientMock.Setup(client => client.NamespacesAsync(It.IsAny<CancellationToken>()))
+            kubernetesSimpleClientMock.Setup(client => client.GetNamespacesAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(namespacesResponseMock.Object));
 
             var request = MetricQueryRequest.Create(widget);
@@ -89,7 +89,7 @@ namespace AnyStatus.Plugins.Kubernetes.Tests
             Assert.AreEqual(State.Invalid, widget.State);
 
             kubernetesHelperMock.Verify(client => client.GetKubernetesClient(It.IsAny<IKubernetesWidget>()), Times.Once());
-            kubernetesSimpleClientMock.Verify(client => client.NamespacesAsync(It.IsAny<CancellationToken>()), Times.Once());
+            kubernetesSimpleClientMock.Verify(client => client.GetNamespacesAsync(It.IsAny<CancellationToken>()), Times.Once());
         }
     }
 }

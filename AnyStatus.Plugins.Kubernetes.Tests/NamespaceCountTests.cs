@@ -15,8 +15,6 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AnyStatus.API;
@@ -47,7 +45,7 @@ namespace AnyStatus.Plugins.Kubernetes.Tests
             kubernetesHelperMock.Setup(helper => helper.GetKubernetesClient(It.IsAny<IKubernetesWidget>()))
                 .Returns(kubernetesSimpleClientMock.Object);
 
-            kubernetesSimpleClientMock.Setup(client => client.NamespacesAsync(It.IsAny<CancellationToken>()))
+            kubernetesSimpleClientMock.Setup(client => client.GetNamespacesAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(namespacesResponseMock.Object));
 
             var request = MetricQueryRequest.Create(widget);
@@ -60,7 +58,7 @@ namespace AnyStatus.Plugins.Kubernetes.Tests
             Assert.AreEqual((long)50, widget.Value);
 
             kubernetesHelperMock.Verify(client => client.GetKubernetesClient(It.IsAny<IKubernetesWidget>()), Times.Once());
-            kubernetesSimpleClientMock.Verify(client => client.NamespacesAsync(It.IsAny<CancellationToken>()), Times.Once());
+            kubernetesSimpleClientMock.Verify(client => client.GetNamespacesAsync(It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [TestMethod]
@@ -77,7 +75,7 @@ namespace AnyStatus.Plugins.Kubernetes.Tests
             kubernetesHelperMock.Setup(helper => helper.GetKubernetesClient(It.IsAny<IKubernetesWidget>()))
                 .Returns(kubernetesSimpleClientMock.Object);
 
-            kubernetesSimpleClientMock.Setup(client => client.NamespacesAsync(It.IsAny<CancellationToken>()))
+            kubernetesSimpleClientMock.Setup(client => client.GetNamespacesAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(namespacesResponseMock.Object));
 
             var request = MetricQueryRequest.Create(widget);
@@ -89,7 +87,7 @@ namespace AnyStatus.Plugins.Kubernetes.Tests
             Assert.AreEqual(State.Invalid, widget.State);
 
             kubernetesHelperMock.Verify(client => client.GetKubernetesClient(It.IsAny<IKubernetesWidget>()), Times.Once());
-            kubernetesSimpleClientMock.Verify(client => client.NamespacesAsync(It.IsAny<CancellationToken>()), Times.Once());
+            kubernetesSimpleClientMock.Verify(client => client.GetNamespacesAsync(It.IsAny<CancellationToken>()), Times.Once());
         }
     }
 }

@@ -70,7 +70,7 @@ namespace AnyStatus.Plugins.Kubernetes.KubernetesClient
         /// </summary>
         /// <param name="cancellationToken">Token to cancel Kubernetes Cluster request</param>
         /// <returns>Cluster namespace list</returns>
-        public virtual async Task<NamespacesResponse> NamespacesAsync(CancellationToken cancellationToken)
+        public virtual async Task<NamespacesResponse> GetNamespacesAsync(CancellationToken cancellationToken)
         {
             NamespacesResponse result;
             try
@@ -93,9 +93,10 @@ namespace AnyStatus.Plugins.Kubernetes.KubernetesClient
         /// <summary>
         /// Retrieves Kubernetes Cluster Pod List
         /// </summary>
+        /// <param name="namespace">Namespace to list pods</param>
         /// <param name="cancellationToken">Token to cancel Kubernetes Cluster request</param>
         /// <returns>Cluster pod list</returns>
-        public virtual async Task<PodsResponse> PodsAsync(string @namespace, CancellationToken cancellationToken)
+        public virtual async Task<PodsResponse> GetPodsAsync(string @namespace, CancellationToken cancellationToken)
         {
             PodsResponse result;
             try
@@ -111,6 +112,32 @@ namespace AnyStatus.Plugins.Kubernetes.KubernetesClient
             catch (Exception ex)
             {
                 result = new PodsResponse { IsValid = false, OriginalException = ex };
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieves Kubernetes Cluster Node metrics
+        /// </summary>
+        /// <param name="nodeName">Node name to retrieve metrics</param>
+        /// <param name="cancellationToken">Token to cancel Kubernetes Cluster request</param>
+        /// <returns>Node Metrics</returns>
+        public virtual async Task<NodeMetricsResponse> GetNodeMetricsAsync(string nodeName, CancellationToken cancellationToken)
+        {
+            NodeMetricsResponse result;
+            try
+            {
+                HttpResponseMessage responseMessage = await GetAsync($"/apis/metrics.k8s.io/v1beta1/nodes/{nodeName}", cancellationToken);
+
+                var response = await responseMessage.Content.ReadAsStringAsync();
+
+                result = JsonConvert.DeserializeObject<NodeMetricsResponse>(response);
+                result.IsValid = true;
+            }
+            catch (Exception ex)
+            {
+                result = new NodeMetricsResponse { IsValid = false, OriginalException = ex };
             }
 
             return result;

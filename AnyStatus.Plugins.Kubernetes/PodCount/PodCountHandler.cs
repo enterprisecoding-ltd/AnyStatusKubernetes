@@ -46,7 +46,7 @@ namespace AnyStatus.Plugins.Kubernetes.PodCount
 
             var client = kubernetesHelper.GetKubernetesClient(podCountWidget);
 
-            var podsResponse = await client.PodsAsync(podCountWidget.Namespace, cancellationToken);
+            var podsResponse = await client.GetPodsAsync(podCountWidget.Namespace, cancellationToken);
 
             if (podsResponse.IsValid)
             {
