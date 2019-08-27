@@ -15,8 +15,6 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AnyStatus.API;
@@ -33,22 +31,22 @@ namespace AnyStatus.Plugins.Kubernetes.Tests
     public class PodCountTests
     {
         [TestMethod]
-        public async Task NamespaceCountShouldValid()
+        public async Task PodCountShouldValid()
         {
-            var widget = new PodCountWidget { Host = "https://127.0.0.1:6443" };
+            var widget = new PodCountWidget { Host = "https://127.0.0.1:6443", Namespace = "default" };
 
-            var namespacesResponseMock = new Mock<NamespacesResponse>();
+            var podsResponseMock = new Mock<PodsResponse>();
             var kubernetesHelperMock = new Mock<KubernetesHelper>();
             var kubernetesSimpleClientMock = new Mock<KubernetesSimpleClient>(MockBehavior.Strict, new object[] { widget });
 
-            namespacesResponseMock.Setup(response => response.Items).Returns(new ItemEntry[50]);
-            namespacesResponseMock.Setup(response => response.IsValid).Returns(true);
+            podsResponseMock.Setup(response => response.Items).Returns(new ItemEntry[50]);
+            podsResponseMock.Setup(response => response.IsValid).Returns(true);
 
             kubernetesHelperMock.Setup(helper => helper.GetKubernetesClient(It.IsAny<IKubernetesWidget>()))
                 .Returns(kubernetesSimpleClientMock.Object);
 
-            kubernetesSimpleClientMock.Setup(client => client.GetNamespacesAsync(It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult(namespacesResponseMock.Object));
+            kubernetesSimpleClientMock.Setup(client => client.GetPodsAsync("default", It.IsAny<CancellationToken>()))
+                .Returns(Task.FromResult(podsResponseMock.Object));
 
             var request = MetricQueryRequest.Create(widget);
 
@@ -60,25 +58,25 @@ namespace AnyStatus.Plugins.Kubernetes.Tests
             Assert.AreEqual((long)50, widget.Value);
 
             kubernetesHelperMock.Verify(client => client.GetKubernetesClient(It.IsAny<IKubernetesWidget>()), Times.Once());
-            kubernetesSimpleClientMock.Verify(client => client.GetNamespacesAsync(It.IsAny<CancellationToken>()), Times.Once());
+            kubernetesSimpleClientMock.Verify(client => client.GetPodsAsync("default", It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [TestMethod]
-        public async Task NamespaceCountShouldInvalidWhenResponseIsInvalid()
+        public async Task PodCountShouldInvalidWhenResponseIsInvalid()
         {
-            var widget = new PodCountWidget { Host = "https://127.0.0.1:6443" };
+            var widget = new PodCountWidget { Host = "https://127.0.0.1:6443", Namespace = "default" };
 
-            var namespacesResponseMock = new Mock<NamespacesResponse>();
+            var podsResponseMock = new Mock<PodsResponse>();
             var kubernetesHelperMock = new Mock<KubernetesHelper>();
             var kubernetesSimpleClientMock = new Mock<KubernetesSimpleClient>(MockBehavior.Strict, new object[] { widget });
 
-            namespacesResponseMock.Setup(response => response.IsValid).Returns(false);
+            podsResponseMock.Setup(response => response.IsValid).Returns(false);
 
             kubernetesHelperMock.Setup(helper => helper.GetKubernetesClient(It.IsAny<IKubernetesWidget>()))
                 .Returns(kubernetesSimpleClientMock.Object);
 
-            kubernetesSimpleClientMock.Setup(client => client.GetNamespacesAsync(It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult(namespacesResponseMock.Object));
+            kubernetesSimpleClientMock.Setup(client => client.GetPodsAsync("default", It.IsAny<CancellationToken>()))
+                .Returns(Task.FromResult(podsResponseMock.Object));
 
             var request = MetricQueryRequest.Create(widget);
 
@@ -89,7 +87,7 @@ namespace AnyStatus.Plugins.Kubernetes.Tests
             Assert.AreEqual(State.Invalid, widget.State);
 
             kubernetesHelperMock.Verify(client => client.GetKubernetesClient(It.IsAny<IKubernetesWidget>()), Times.Once());
-            kubernetesSimpleClientMock.Verify(client => client.GetNamespacesAsync(It.IsAny<CancellationToken>()), Times.Once());
+            kubernetesSimpleClientMock.Verify(client => client.GetPodsAsync("default", It.IsAny<CancellationToken>()), Times.Once());
         }
     }
 }
