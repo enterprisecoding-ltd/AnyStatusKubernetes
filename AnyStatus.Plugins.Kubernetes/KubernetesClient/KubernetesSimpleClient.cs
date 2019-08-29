@@ -141,6 +141,33 @@ namespace AnyStatus.Plugins.Kubernetes.KubernetesClient
             return result;
         }
 
+        /// <summary>
+        /// Retrieves Pod metrics
+        /// </summary>
+        /// <param name="@namespace">Kubernetes namespace that pod running</param>
+        /// <param name="podsName">Pod name to retrieve metrics</param>
+        /// <param name="cancellationToken">Token to cancel Kubernetes Cluster request</param>
+        /// <returns>Node Metrics</returns>
+        public virtual async Task<PodMetricsResponse> GetPodMetricsAsync(string @namespace, string podsName, CancellationToken cancellationToken)
+        {
+            PodMetricsResponse result;
+            try
+            {
+                HttpResponseMessage responseMessage = await GetAsync($"/apis/metrics.k8s.io/v1beta1/namespaces/{@namespace}/pods/{podsName}", cancellationToken);
+
+                var response = await responseMessage.Content.ReadAsStringAsync();
+
+                result = JsonConvert.DeserializeObject<PodMetricsResponse>(response);
+                result.IsValid = true;
+            }
+            catch (Exception ex)
+            {
+                result = new PodMetricsResponse { IsValid = false, OriginalException = ex };
+            }
+
+            return result;
+        }
+
         private async Task<HttpResponseMessage> GetAsync(string path, CancellationToken cancellationToken)
         {
             var responseMessage = await httpClient.GetAsync(path, cancellationToken);

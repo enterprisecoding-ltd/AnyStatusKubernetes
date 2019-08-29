@@ -14,6 +14,7 @@ Widgets for AnyStatus to provide capability to check various Kubernetes Cluster 
 -  [x] Namespace Count
 -  [x] Pod Count
 -  [x] Node Ram & CPU Usage
+-  [x] Pod Ram Usage
 
 ## Installation
 

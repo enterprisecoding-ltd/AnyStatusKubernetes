@@ -65,12 +65,16 @@
   <ItemGroup>
     <Compile Include="KubernetesClient\KubernetesSimpleClient.cs" />
     <Compile Include="KubernetesClient\MetricsUsage.cs" />
+    <Compile Include="KubernetesClient\Objects\ContainerMetric.cs" />
     <Compile Include="KubernetesClient\Objects\ItemEntry.cs" />
     <Compile Include="KubernetesClient\Objects\Metadata.cs" />
     <Compile Include="KubernetesClient\Objects\NamespacesResponse.cs" />
     <Compile Include="KubernetesClient\Objects\NodeMetricsResponse.cs" />
+    <Compile Include="KubernetesClient\Objects\PodMetricsResponse.cs" />
     <Compile Include="KubernetesClient\Objects\PodsResponse.cs" />
     <Compile Include="KubernetesClient\Objects\Shared\KubernetesResponseBase.cs" />
+    <Compile Include="PodRamUsage\PodRamUsageHandler.cs" />
+    <Compile Include="PodRamUsage\PodRamUsageWidget.cs" />
     <Compile Include="NodeRamUsage\NodeRamUsageHandler.cs" />
     <Compile Include="NodeRamUsage\NodeRamUsageWidget.cs" />
     <Compile Include="NodeCPUUsage\NodeCPUUsageHandler.cs" />
