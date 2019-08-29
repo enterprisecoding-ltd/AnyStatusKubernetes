@@ -14,7 +14,7 @@ Widgets for AnyStatus to provide capability to check various Kubernetes Cluster 
 -  [x] Namespace Count
 -  [x] Pod Count
 -  [x] Node Ram & CPU Usage
--  [x] Pod Ram Usage
+-  [x] Pod Ram & CPU Usage
 
 ## Installation
 
@@ -28,6 +28,7 @@ Read access token;
 
     kubectl get secrets -o jsonpath="{.items[?(@.metadata.annotations['kubernetes\.io/service-account\.name']=='anystatus-sa')].data.token}" | base64 -d
 
+In order to use Node/Pod Ram & CPU widgets, metrics server needs to be installed
 ## Contribute
 
 Contributions are most welcome :)

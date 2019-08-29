@@ -73,6 +73,8 @@
     <Compile Include="KubernetesClient\Objects\PodMetricsResponse.cs" />
     <Compile Include="KubernetesClient\Objects\PodsResponse.cs" />
     <Compile Include="KubernetesClient\Objects\Shared\KubernetesResponseBase.cs" />
+    <Compile Include="PodCPUUsage\PodCPUUsageHandler.cs" />
+    <Compile Include="PodCPUUsage\PodCPUUsageWidget.cs" />
     <Compile Include="PodRamUsage\PodRamUsageHandler.cs" />
     <Compile Include="PodRamUsage\PodRamUsageWidget.cs" />
     <Compile Include="NodeRamUsage\NodeRamUsageHandler.cs" />
